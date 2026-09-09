@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WindCore — Analytics</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body onload="initAnalytics()">
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-left">
+    <div class="logo-icon">💨</div>
+    <h2>WindCore</h2>
+  </div>
+  <div class="nav-right">
+    <span class="nav-user" id="usernameLabel"></span>
+    <button class="btn-sm" onclick="window.location.href='dashboard.html'">Dashboard</button>
+    <button class="btn-sm active" onclick="window.location.href='analytics.html'">Analytics</button>
+    <button class="btn-sm" onclick="exportCSV()">Export CSV</button>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<div class="analytics-page">
+
+  <!-- Summary cards -->
+  <div class="summary-row">
+    <div class="stat-card blue">
+      <div class="label">Avg Power</div>
+      <div class="value" id="summAvgPower">--</div>
+    </div>
+    <div class="stat-card green">
+      <div class="label">Peak Power</div>
+      <div class="value" id="summPeakPower">--</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="label">Avg Wind</div>
+      <div class="value" id="summAvgWind">--</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="label">Data Points</div>
+      <div class="value" id="summPoints">--</div>
+    </div>
+  </div>
+
+  <!-- Power trend (wide) + scatter -->
+  <div class="charts-row">
+    <div class="panel chart-panel">
+      <div class="panel-title">Power &amp; Efficiency over time</div>
+      <div class="chart-wrap">
+        <canvas id="powerChart"></canvas>
+      </div>
+    </div>
+    <div class="panel chart-panel">
+      <div class="panel-title">Wind vs Power</div>
+      <div class="chart-wrap">
+        <canvas id="scatterChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Temp + wind bar + physics reference -->
+  <div class="charts-row2">
+    <div class="panel chart-panel">
+      <div class="panel-title">Temperature &amp; Wind over time</div>
+      <div class="chart-wrap">
+        <canvas id="tempWindChart"></canvas>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Physics Reference</div>
+      <div class="physics-grid" style="grid-template-columns:1fr; gap:12px;">
+        <div>
+          <div class="physics-section-title blue">Power Equation</div>
+          <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--text-muted); line-height:2;">
+            P = ½ × ρ × A × Cₚ × v³<br>
+            ρ = 1.225 kg/m³<br>
+            A = π m² (radius = 1m)<br>
+            Cₚ = 0.35
+          </div>
+        </div>
+        <div>
+          <div class="physics-section-title green">Operating Limits</div>
+          <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--text-muted); line-height:2;">
+            Cut-in: 2.5 m/s<br>
+            Rated: ~12 m/s<br>
+            Cut-out: 25 m/s<br>
+            Max power: 3500 W
+          </div>
+        </div>
+        <div>
+          <div class="physics-section-title amber">Betz Limit</div>
+          <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--text-muted); line-height:2;">
+            Theoretical max: 59.3%<br>
+            This turbine Cₚ: 35%<br>
+            Typical range: 25–45%
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
